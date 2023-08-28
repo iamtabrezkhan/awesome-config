@@ -31,17 +31,19 @@ function _M.get()
     }
 
     local menu_items = {
-        {
-            name = "Logout",
-            icon = config_path .. "/exit.png"
-        },
+        -- {
+        --     name = "Logout",
+        --     icon = config_path .. "/exit.png"
+        -- },
         {
             name = "Restart",
-            icon = config_path .. "/restart.png"
+            icon = config_path .. "/restart.png",
+            cmd = "sudo reboot"
         },
         {
             name = "Shutdown",
-            icon = config_path .. "/power.png"
+            icon = config_path .. "/power.png",
+            cmd = "sudo shutdown"
         }
     }
     local menu_item_rows = {
@@ -77,6 +79,13 @@ function _M.get()
         menu_row:connect_signal("mouse::leave", function (c)
             c:set_bg(gmc.color["dark"])
         end)
+        menu_row:buttons(
+            awful.util.table.join(
+                awful.button({}, 1, function ()
+                    popup.visible = not popup.visible
+                end)
+            )
+        )
         table.insert(menu_item_rows, menu_row)
     end
 

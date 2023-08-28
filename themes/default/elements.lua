@@ -42,11 +42,10 @@ theme.taglist_bg_focus = gmc.color['red500'] .. "cc"
 theme.taglist_fg_focus = gmc.color['white']
 
 
-theme.tasklist_bg_normal = gmc.color['white']    .. "88"
---theme.tasklist_bg_normal = "png:" .. theme_path .. "misc/copycat-holo/bg_focus.png"
+theme.tasklist_bg_normal = gmc.color['dark']
 theme.tasklist_bg_focus  = gmc.color['red300']   .. "88"
---theme.tasklist_bg_focus  = "png:" .. theme_path .. "misc/copycat-holo/bg_focus_noline.png"
 theme.tasklist_fg_focus  = gmc.color['black']
+theme.tasklist_fg_normal  = gmc.color['neongreen']
 
 theme.titlebar_bg_normal = gmc.color['white']   .. "cc"
 theme.titlebar_bg_focus  = gmc.color['white']   .. "cc"
@@ -94,3 +93,5 @@ theme.menu_border_width = 1
 -- you wish and access them by using
 -- beautiful.variable in your rc.lua
 --theme.bg_widget = "#cc0000"
+theme.wibar_bg = gmc.color['dark']
+theme.wibar_fg = gmc.color['white']

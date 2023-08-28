@@ -9,7 +9,9 @@ local wibox = require("wibox")
 local deco = {
   wallpaper = require("deco.wallpaper"),
   taglist   = require("deco.taglist"),
-  tasklist  = require("deco.tasklist")
+  tasklist  = require("deco.tasklist"),
+  usage = require('deco.usage'),
+  power = require('deco.power')
 }
 
 local taglist_buttons  = deco.taglist()
@@ -21,7 +23,11 @@ local _M = {}
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+local mytextclock = wibox.widget.textclock(
+  "%a %b %d, %I:%M ",
+  60,
+  "Z"
+)
 
 awful.screen.connect_for_each_screen(function(s)
   -- Wallpaper
@@ -55,7 +61,10 @@ awful.screen.connect_for_each_screen(function(s)
   }
 
   -- Create the wibox
-  s.mywibox = awful.wibar({ position = "top", screen = s })
+  s.mywibox = awful.wibar({
+    position = "top",
+    screen = s
+  })
 
   -- Add widgets to the wibox
   s.mywibox:setup {
@@ -69,11 +78,13 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytasklist, -- Middle widget
     { -- Right widgets
       layout = wibox.layout.fixed.horizontal,
-      mykeyboardlayout,
+      deco.usage(),
+      -- mykeyboardlayout,
       wibox.widget.systray(),
       mytextclock,
-      s.mylayoutbox,
-    },
+      deco.power(),
+      s.mylayoutbox
+    }
   }
 end)
 -- }}}

@@ -7,8 +7,11 @@ local _M = {}
 -- Associative Array (Hash)
 
 _M.color = {
+    ["dark"] = "#111010",
     ['white'] = '#ffffff',
     ['black'] = '#000000',
+    ["neongreen"] = "#00FF23",
+    ['neonorange'] = "#FF4D00",
 
     ['grey50']  = '#fafafa',
     ['grey100'] = '#f5f5f5',

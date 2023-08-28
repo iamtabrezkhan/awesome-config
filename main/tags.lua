@@ -17,7 +17,7 @@ function _M.get ()
   awful.screen.connect_for_each_screen(function(s)
     -- Each screen has its own tag table.
     for i, t in ipairs(my_tags) do
-      local tag = awful.tag.add("", { icon = t.icon, screen = s, layout = RC.layouts[1], layouts = RC.layouts })
+      local tag = awful.tag.add("", { icon = t.icon, screen = s, layout = RC.layouts[2], layouts = RC.layouts })
       if i == 1 then
         tag.selected = true
       end

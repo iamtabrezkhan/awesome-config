@@ -1,6 +1,7 @@
 -- Standard awesome library
 local gears = require("gears")
 local awful     = require("awful")
+local colors    = require("themes.default.colors")
 
 -- Wibox handling library
 local wibox = require("wibox")
@@ -55,35 +56,85 @@ awful.screen.connect_for_each_screen(function(s)
 
   -- Create a tasklist widget
   s.mytasklist = awful.widget.tasklist {
-    screen  = s,
-    filter  = awful.widget.tasklist.filter.currenttags,
-    buttons = tasklist_buttons
-  }
+    screen   = s,
+    filter   = awful.widget.tasklist.filter.currenttags,
+    buttons  = tasklist_buttons,
+    style    = {
+        shape_border_width = 1,
+        shape_border_color = colors.bg,
+        shape  = gears.shape.rounded_bar,
+        shap_clip = true,
+    },
+    layout   = {
+        spacing = 2,
+        layout  = wibox.layout.fixed.horizontal
+    },
+    widget_template = {
+        {
+            {
+              {
+                id     = 'icon_role',
+                widget = wibox.widget.imagebox,
+              },
+              widget  = wibox.container.background,
+            },
+            margins = 6,
+            widget = wibox.container.margin
+        },
+        id = 'background_role',
+        widget = wibox.container.background,
+    },
+}
 
   -- Create the wibox
   s.mywibox = awful.wibar({
     position = "top",
-    screen = s
+    screen = s,
+    height = 50,
   })
 
   -- Add widgets to the wibox
   s.mywibox:setup {
-    layout = wibox.layout.align.horizontal,
-    { -- Left widgets
-      layout = wibox.layout.fixed.horizontal,
-      RC.launcher,
-      s.mytaglist,
-      s.mypromptbox,
-    },
-    s.mytasklist, -- Middle widget
-    { -- Right widgets
-      layout = wibox.layout.fixed.horizontal,
-      deco.usage(),
-      -- mykeyboardlayout,
-      wibox.widget.systray(),
-      mytextclock,
-      deco.power(),
-      s.mylayoutbox
+    layout = wibox.container.margin,
+    top = 8, bottom = 2,
+    left = 8, right = 8,
+    {
+      layout = wibox.container.background,
+      bg = colors.bg,
+      shape = function (cr, width, height)
+        gears.shape.rounded_rect(cr, width, height, 50)
+      end,
+      shape_clip = true,
+      shape_border_width = 2,
+      shape_border_color = colors.dark1,
+      {
+        layout = wibox.container.margin,
+        top = 6, bottom = 6,
+        left = 16, right = 16,
+        {
+          layout = wibox.layout.align.horizontal,
+          { -- Left widgets
+            layout = wibox.layout.fixed.horizontal,
+            {
+              layout = wibox.container.margin,
+              right = 4,
+              RC.launcher
+            },
+            s.mytaglist,
+            s.mypromptbox,
+          },
+          s.mytasklist, -- Middle widget
+          { -- Right widgets
+            layout = wibox.layout.fixed.horizontal,
+            deco.usage(),
+            -- mykeyboardlayout,
+            wibox.widget.systray(),
+            mytextclock,
+            deco.power(),
+            s.mylayoutbox
+          }
+        }
+      }
     }
   }
 end)

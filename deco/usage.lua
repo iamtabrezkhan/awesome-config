@@ -113,7 +113,6 @@ function _M.get()
                             text = "",
                             widget = wibox.widget.textbox,
                         },
-                        fg = gmc.color['neongreen'],
                         widget = wibox.container.background
                     },
                     layout = wibox.layout.fixed.horizontal

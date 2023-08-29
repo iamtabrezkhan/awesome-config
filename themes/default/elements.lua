@@ -1,8 +1,9 @@
 local gmc = require("themes.default.gmc")
-
+local colors = require('themes.default.colors')
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
+local gshapre = require('gears.shape')
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -42,14 +43,15 @@ theme.taglist_bg_focus = gmc.color['red500'] .. "cc"
 theme.taglist_fg_focus = gmc.color['white']
 
 
-theme.tasklist_bg_normal = gmc.color['dark']
-theme.tasklist_bg_focus  = gmc.color['red300']   .. "88"
+theme.tasklist_bg_normal = colors.bg
+theme.tasklist_bg_focus  = colors.dark0
 theme.tasklist_fg_focus  = gmc.color['black']
 theme.tasklist_fg_normal  = gmc.color['neongreen']
+theme.tasklist_shape_border_color_focus = colors.cyan0
 
-theme.titlebar_bg_normal = gmc.color['white']   .. "cc"
-theme.titlebar_bg_focus  = gmc.color['white']   .. "cc"
-theme.titlebar_fg_focus  = gmc.color['black']   .. "cc"
+theme.titlebar_bg_normal = colors.bg
+theme.titlebar_bg_focus  = colors.dark0
+theme.titlebar_fg_focus  = colors.white0
 
 -- Generate taglist squares:
 local taglist_square_size = dpi(4)
@@ -89,9 +91,6 @@ theme.menu_fg_focus  = gmc.color['black']
 theme.menu_border_color = gmc.color['blue500'] .. "cc"
 theme.menu_border_width = 1
 
--- You can add as many variables as
--- you wish and access them by using
--- beautiful.variable in your rc.lua
---theme.bg_widget = "#cc0000"
-theme.wibar_bg = gmc.color['dark']
-theme.wibar_fg = gmc.color['white']
+-- wibar
+theme.wibar_bg = colors.empty
+theme.wibar_fg = colors.fg

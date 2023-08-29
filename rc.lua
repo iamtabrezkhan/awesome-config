@@ -67,3 +67,5 @@ require('deco.statusbar')
 awful.rules.rules = main.rules(bindings.clientkeys(), bindings.clientbuttons())
 
 require("main.signals")
+
+awful.spawn.with_shell("~/.scripts/awesome_autostart.sh")

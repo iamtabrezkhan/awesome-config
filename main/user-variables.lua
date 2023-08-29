@@ -1,5 +1,5 @@
 local _M = {
-    terminal = "st",
+    terminal = "kitty",
     modkey = "Mod4",
     wallpaper = nil
 }

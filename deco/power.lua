@@ -2,6 +2,8 @@ local wibox = require('wibox')
 local awful = require('awful')
 local gears = require('gears')
 local gmc   = require('themes.default.gmc')
+local iconbutton = require('ui.iconbutton')
+local colors     = require('themes.default.colors')
 
 local _M = {}
 
@@ -9,16 +11,6 @@ local config_path = awful.util.getdir("config")
 local is_active = false
 
 function _M.get()
-    local power_button = wibox.widget {
-        layout = wibox.container.margin,
-        left = 2,
-        right = 2,
-        {
-            widget = wibox.widget.imagebox,
-            image = config_path .. "/power.png",
-            id = "p"
-        }
-    }
 
     local popup = awful.popup {
         widget = {},
@@ -28,6 +20,36 @@ function _M.get()
         minimum_width = 120,
         border_width = 2,
         border_color = gmc.color["white"]
+    }
+
+    local icon_path = config_path .. "/power.png"
+
+    local power_icon_button = iconbutton {
+        icon = icon_path,
+        margins = 4,
+        id = "p",
+        radius = 6,
+        bg_hover = colors.dark0,
+        on_click = function (button_instance)
+            local iw = button_instance:get_children_by_id("p")[1]
+            if(is_active == false) then
+                iw:set_image(config_path .. "/power-active.png")
+            else
+                iw:set_image(config_path .. "/power.png")
+            end
+            is_active = not is_active
+            if popup.visible then
+                popup.visible = not popup.visible
+            else
+                popup:move_next_to(mouse.current_widget_geometry)
+            end
+        end
+    }
+    local power_button = wibox.widget {
+        layout = wibox.container.margin,
+        left = 2,
+        right = 2,
+        power_icon_button
     }
 
     local menu_items = {
@@ -90,21 +112,6 @@ function _M.get()
     end
 
     popup:setup(menu_item_rows)
-
-    power_button:connect_signal("button::press", function (b)
-        local power_icon = power_button:get_children_by_id("p")[1]
-        if(is_active == false) then
-            power_icon:set_image(config_path .. "/power-active.png")
-        else
-            power_icon:set_image(config_path .. "/power.png")
-        end
-        is_active = not is_active
-        if popup.visible then
-            popup.visible = not popup.visible
-        else
-            popup:move_next_to(mouse.current_widget_geometry)
-        end
-    end)
 
     local power_widget = {
         power_button,

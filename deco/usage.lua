@@ -2,7 +2,6 @@ local beautiful = require("beautiful")
 local wibox = require("wibox")
 local gears = require('gears')
 local awful = require('awful')
-local gmc = require("themes.default.gmc")
 
 local config_path = awful.util.getdir("config")
 

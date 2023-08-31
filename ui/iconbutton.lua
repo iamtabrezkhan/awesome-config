@@ -1,6 +1,5 @@
 local awful = require('awful')
 local wibox_widget = require("wibox.widget")
-local wibox_layout = require("wibox.layout")
 local wibox_container = require("wibox.container")
 local gshape = require("gears.shape")
 
@@ -45,7 +44,7 @@ local function iconButton(args)
         end
     end)
     background:connect_signal("button::press", function (b)
-        args.on_click(background)
+        args.on_click()
     end)
     return background
 end

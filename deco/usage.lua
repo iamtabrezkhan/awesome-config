@@ -98,26 +98,19 @@ function _M.get()
             {
                 {
                     {
-                        {
-                            id = value.id_image,
-                            widget = wibox.widget.imagebox,
-                            image = value.icon
-                        },
-                        right = 4,
-                        widget = wibox.container.margin
+                        id = value.id_image,
+                        widget = wibox.widget.imagebox,
+                        image = value.icon
                     },
                     {
-                        {
-                            id = value.id,
-                            text = "",
-                            widget = wibox.widget.textbox,
-                        },
-                        widget = wibox.container.background
+                        id = value.id,
+                        text = "",
+                        widget = wibox.widget.textbox,
                     },
+                    spacing = 4,
                     layout = wibox.layout.fixed.horizontal
                 },
-                left = 2,
-                right = 6,
+                right = 8,
                 layout = wibox.container.margin
             }
         )
@@ -132,12 +125,12 @@ function _M.get()
         call_now = true,
         autostart = true,
         callback = function ()
-            -- cpu
-            local cpuW = my_button:get_children_by_id("cpu")[1]
-            items[2].update(cpuW)
             -- gpu
             local gpuW = my_button:get_children_by_id("gpu")[1]
             items[1].update(gpuW)
+            -- cpu
+            local cpuW = my_button:get_children_by_id("cpu")[1]
+            items[2].update(cpuW)
             -- wifi
             local wifiW = my_button:get_children_by_id("wifi")[1]
             items[4].update(wifiW)

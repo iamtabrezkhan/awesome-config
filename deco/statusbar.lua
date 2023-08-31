@@ -109,7 +109,7 @@ awful.screen.connect_for_each_screen(function(s)
       shape_border_color = colors.dark1,
       {
         layout = wibox.container.margin,
-        top = 6, bottom = 6,
+        top = 8, bottom = 8,
         left = 16, right = 16,
         {
           layout = wibox.layout.align.horizontal,

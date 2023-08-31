@@ -1,9 +1,10 @@
 local wibox = require('wibox')
 local awful = require('awful')
-local gears = require('gears')
-local gmc   = require('themes.default.gmc')
+local colors = require('themes.default.colors')
+local gshape = require("gears.shape")
+
 local iconbutton = require('ui.iconbutton')
-local colors     = require('themes.default.colors')
+local list = require('ui.list')
 
 local _M = {}
 
@@ -19,7 +20,11 @@ function _M.get()
         maximum_width = 400,
         minimum_width = 120,
         border_width = 2,
-        border_color = gmc.color["white"]
+        border_color = colors.dark1,
+        shape = function (cr, w, h)
+            gshape.rounded_rect(cr, w, h, 8)
+        end,
+        shape_clip = true
     }
 
     local icon_path = config_path .. "/power.png"
@@ -30,13 +35,7 @@ function _M.get()
         id = "p",
         radius = 6,
         bg_hover = colors.dark0,
-        on_click = function (button_instance)
-            local iw = button_instance:get_children_by_id("p")[1]
-            if(is_active == false) then
-                iw:set_image(config_path .. "/power-active.png")
-            else
-                iw:set_image(config_path .. "/power.png")
-            end
+        on_click = function ()
             is_active = not is_active
             if popup.visible then
                 popup.visible = not popup.visible
@@ -68,50 +67,21 @@ function _M.get()
             cmd = "sudo shutdown"
         }
     }
-    local menu_item_rows = {
-        layout = wibox.layout.fixed.vertical
-    }
-    for _, menu_item in ipairs(menu_items) do
-        local menu_row = wibox.widget {
-            widget = wibox.container.background,
-            bg = gmc.color["dark"],
-            fg = gmc.color["white"],
-            {
-                widget = wibox.container.margin,
-                margins = 8,
-                {
-                    {
-                        widget = wibox.widget.imagebox,
-                        image = menu_item.icon,
-                        forced_width = 20,
-                        forced_height = 20,
-                    },
-                    {
-                        widget = wibox.widget.textbox,
-                        text = menu_item.name
-                    },
-                    layout = wibox.layout.fixed.horizontal,
-                    spacing = 8
-                }
-            }
-        }
-        menu_row:connect_signal("mouse::enter", function (c)
-            c:set_bg(gmc.color["grey800"])
-        end)
-        menu_row:connect_signal("mouse::leave", function (c)
-            c:set_bg(gmc.color["dark"])
-        end)
-        menu_row:buttons(
-            awful.util.table.join(
-                awful.button({}, 1, function ()
-                    popup.visible = not popup.visible
-                end)
-            )
-        )
-        table.insert(menu_item_rows, menu_row)
-    end
 
-    popup:setup(menu_item_rows)
+    local popup_menu = list {
+        items = menu_items,
+        margins = 8,
+        icon_text_spacing = 8,
+        icon_width = 20,
+        icon_height = 20,
+        bg = colors.bg,
+        fb = colors.fg,
+        on_click = function ()
+            popup.visible = not popup.visible
+        end
+    }
+
+    popup:setup(popup_menu)
 
     local power_widget = {
         power_button,

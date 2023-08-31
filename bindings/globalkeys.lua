@@ -14,6 +14,12 @@ local _M = {}
 
 -- reading
 -- https://awesomewm.org/wiki/Global_Keybindings
+local naughty = require("naughty")
+awesome.connect_signal("system:volumeupdate", function (args)
+    naughty.notify({
+        text = args.action
+    })
+end)
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -66,6 +72,36 @@ function _M.get()
             end
         end,
         {description = "go back", group = "client"}),
+
+    -- volume ----------------------------------
+    awful.key({}, "XF86AudioRaiseVolume", function ()
+        awful.spawn("pamixer --increase 5")
+        awesome.emit_signal("system:volumeupdate", {
+            action = "UP"
+        })
+    end, {
+        description = "Increase volume",
+        group = "System"
+    }),
+    awful.key({}, "XF86AudioLowerVolume", function ()
+        awful.spawn("pamixer --decrease 5")
+        awesome.emit_signal("system:volumeupdate", {
+            action = "DOWN"
+        })
+    end, {
+        description = "Decrease volume",
+        group = "System"
+    }),
+    awful.key({}, "XF86AudioMute", function ()
+        awful.spawn("pamixer --toggle-mute")
+        awesome.emit_signal("system:volumeupdate", {
+            action = "TOGGLE_MUTE"
+        })
+    end, {
+        description = "Mute volume",
+        group = "System"
+    }),
+    --------------------------------------------
 
     --   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     -- Standard program

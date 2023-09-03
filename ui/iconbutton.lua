@@ -1,4 +1,3 @@
-local awful = require('awful')
 local wibox_widget = require("wibox.widget")
 local wibox_container = require("wibox.container")
 local gshape = require("gears.shape")
@@ -17,7 +16,7 @@ local function iconButton(args)
     local background = wibox_widget {
         container,
         widget = wibox_container.background,
-        shape = function (cr, w, h)
+        shape = function(cr, w, h)
             gshape.rounded_rect(cr, w, h, args.radius)
         end,
         bg = args.bg,
@@ -25,10 +24,10 @@ local function iconButton(args)
     }
 
     -- signals --------------------------------------------
-    background:connect_signal("mouse::enter", function (b)
+    background:connect_signal("mouse::enter", function(b)
         b:set_bg(args.bg_hover)
     end)
-    background:connect_signal("mouse::leave", function (b)
+    background:connect_signal("mouse::leave", function(b)
         b:set_bg(args.bg)
     end)
     local old_cursor, old_wibox
@@ -43,7 +42,7 @@ local function iconButton(args)
             old_wibox = nil
         end
     end)
-    background:connect_signal("button::press", function (b)
+    background:connect_signal("button::press", function(b)
         args.on_click()
     end)
     return background

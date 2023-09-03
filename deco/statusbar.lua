@@ -1,30 +1,31 @@
 -- Standard awesome library
-local gears = require("gears")
-local awful     = require("awful")
-local colors    = require("themes.default.colors")
+local gears            = require("gears")
+local awful            = require("awful")
+local colors           = require("themes.default.colors")
 
 -- Wibox handling library
-local wibox = require("wibox")
+local wibox            = require("wibox")
 
 -- Custom Local Library: Common Functional Decoration
-local deco = {
+local deco             = {
   wallpaper = require("deco.wallpaper"),
   taglist   = require("deco.taglist"),
   tasklist  = require("deco.tasklist"),
-  usage = require('deco.usage'),
-  power = require('deco.power')
+  usage     = require('deco.usage'),
+  power     = require('deco.power'),
+  volume    = require('deco.volume')
 }
 
 local taglist_buttons  = deco.taglist()
 local tasklist_buttons = deco.tasklist()
 
-local _M = {}
+local _M               = {}
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 -- {{{ Wibar
 -- Create a textclock widget
-local mytextclock = wibox.widget.textclock(
+local mytextclock      = wibox.widget.textclock(
   "%a %b %d, %I:%M ",
   60,
   "Z"
@@ -41,10 +42,10 @@ awful.screen.connect_for_each_screen(function(s)
   -- We need one layoutbox per screen.
   s.mylayoutbox = awful.widget.layoutbox(s)
   s.mylayoutbox:buttons(gears.table.join(
-    awful.button({ }, 1, function () awful.layout.inc( 1) end),
-    awful.button({ }, 3, function () awful.layout.inc(-1) end),
-    awful.button({ }, 4, function () awful.layout.inc( 1) end),
-    awful.button({ }, 5, function () awful.layout.inc(-1) end)
+    awful.button({}, 1, function() awful.layout.inc(1) end),
+    awful.button({}, 3, function() awful.layout.inc(-1) end),
+    awful.button({}, 4, function() awful.layout.inc(1) end),
+    awful.button({}, 5, function() awful.layout.inc(-1) end)
   ))
 
   -- Create a taglist widget
@@ -56,35 +57,35 @@ awful.screen.connect_for_each_screen(function(s)
 
   -- Create a tasklist widget
   s.mytasklist = awful.widget.tasklist {
-    screen   = s,
-    filter   = awful.widget.tasklist.filter.currenttags,
-    buttons  = tasklist_buttons,
-    style    = {
-        shape_border_width = 1,
-        shape_border_color = colors.bg,
-        shape  = gears.shape.rounded_bar,
-        shap_clip = true,
+    screen          = s,
+    filter          = awful.widget.tasklist.filter.currenttags,
+    buttons         = tasklist_buttons,
+    style           = {
+      shape_border_width = 1,
+      shape_border_color = colors.bg,
+      shape              = gears.shape.rounded_bar,
+      shap_clip          = true,
     },
-    layout   = {
-        spacing = 2,
-        layout  = wibox.layout.fixed.horizontal
+    layout          = {
+      spacing = 2,
+      layout  = wibox.layout.fixed.horizontal
     },
     widget_template = {
+      {
         {
-            {
-              {
-                id     = 'icon_role',
-                widget = wibox.widget.imagebox,
-              },
-              widget  = wibox.container.background,
-            },
-            margins = 6,
-            widget = wibox.container.margin
+          {
+            id     = 'icon_role',
+            widget = wibox.widget.imagebox,
+          },
+          widget = wibox.container.background,
         },
-        id = 'background_role',
-        widget = wibox.container.background,
+        margins = 6,
+        widget = wibox.container.margin
+      },
+      id = 'background_role',
+      widget = wibox.container.background,
     },
-}
+  }
 
   -- Create the wibox
   s.mywibox = awful.wibar({
@@ -101,7 +102,7 @@ awful.screen.connect_for_each_screen(function(s)
     {
       layout = wibox.container.background,
       bg = colors.bg,
-      shape = function (cr, width, height)
+      shape = function(cr, width, height)
         gears.shape.rounded_rect(cr, width, height, 50)
       end,
       shape_clip = true,
@@ -109,8 +110,10 @@ awful.screen.connect_for_each_screen(function(s)
       shape_border_color = colors.dark1,
       {
         layout = wibox.container.margin,
-        top = 8, bottom = 8,
-        left = 16, right = 16,
+        top = 8,
+        bottom = 8,
+        left = 16,
+        right = 16,
         {
           layout = wibox.layout.align.horizontal,
           { -- Left widgets
@@ -124,8 +127,10 @@ awful.screen.connect_for_each_screen(function(s)
             s.mypromptbox,
           },
           s.mytasklist, -- Middle widget
-          { -- Right widgets
+          {             -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            spacing = 6,
+            deco.volume(),
             deco.usage(),
             -- mykeyboardlayout,
             wibox.widget.systray(),

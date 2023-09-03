@@ -17,7 +17,7 @@ local function format_memory(memory_mb)
     end
 end
 
-local function get_gpu_text (text)
+local function get_gpu_text(text)
     local values = {}
     for value in text:gmatch("[^,]+") do
         table.insert(values, value:match("^%s*(.-)%s*$")) -- Trim whitespace
@@ -33,11 +33,12 @@ local items = {
     {
         id = "gpu",
         icon = config_path .. "/gpu.png",
-        update = function (w)
-            local cmd = "nvidia-smi --query-gpu=name,memory.total,memory.used,temperature.gpu --format=csv,noheader,nounits"
-            local err = awful.spawn. easy_async_with_shell(
+        update = function(w)
+            local cmd =
+            "nvidia-smi --query-gpu=name,memory.total,memory.used,temperature.gpu --format=csv,noheader,nounits"
+            local err = awful.spawn.easy_async_with_shell(
                 cmd,
-                function (out)
+                function(out)
                     local gpu_text = get_gpu_text(out)
                     w:set_text(gpu_text)
                 end
@@ -47,11 +48,11 @@ local items = {
     {
         id = "cpu",
         icon = config_path .. "/cpu.png",
-        update = function (w)
+        update = function(w)
             local cmd = "mpstat 1 1 | awk '" .. '/^Average/ {print 100-$NF"' .. "%" .. '"' .. "}'"
-            local err = awful.spawn. easy_async_with_shell(
+            local err = awful.spawn.easy_async_with_shell(
                 cmd,
-                function (out)
+                function(out)
                     w:set_text(out)
                 end
             )
@@ -60,11 +61,11 @@ local items = {
     {
         id = "cputemp",
         icon = config_path .. "/temp-cpu.png",
-        update = function (w)
+        update = function(w)
             local cmd = "acpi -t | awk '{print $4 " .. '"°C"' .. "}'"
-            local err = awful.spawn. easy_async_with_shell(
+            local err = awful.spawn.easy_async_with_shell(
                 cmd,
-                function (out)
+                function(out)
                     w:set_text(out)
                 end
             )
@@ -74,11 +75,11 @@ local items = {
         id = "wifi",
         icon = config_path .. "/wifi.png",
         id_image = "wifi",
-        update = function (w)
+        update = function(w)
             local cmd = "curl -Is https://www.google.com | head -n 1"
-            local err = awful.spawn. easy_async_with_shell(
+            local err = awful.spawn.easy_async_with_shell(
                 cmd,
-                function (out)
+                function(out)
                     if out:match("200") then
                         w:set_image(config_path .. "/wifi-active.png")
                     else
@@ -110,13 +111,13 @@ function _M.get()
                     spacing = 4,
                     layout = wibox.layout.fixed.horizontal
                 },
-                right = 8,
                 layout = wibox.container.margin
             }
         )
     end
     local my_button = wibox.widget {
         layout = wibox.layout.fixed.horizontal,
+        spacing = 6,
         table.unpack(usage_widget_items),
     }
 
@@ -124,7 +125,7 @@ function _M.get()
         timeout = 5,
         call_now = true,
         autostart = true,
-        callback = function ()
+        callback = function()
             -- gpu
             local gpuW = my_button:get_children_by_id("gpu")[1]
             items[1].update(gpuW)
@@ -141,7 +142,7 @@ function _M.get()
         timeout = 60,
         call_now = true,
         autostart = true,
-        callback = function ()
+        callback = function()
             local tempW = my_button:get_children_by_id("cputemp")[1]
             items[3].update(tempW)
         end
